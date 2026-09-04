@@ -47,9 +47,13 @@ paridad numeroConsecutivo
 
 -- 5. VALIDACION DE CODIGO 
 
---codigoValido :: Int -> Bool
---codigoValido codigo = 
-  --  codigo >= 10000000 && codigo <= 99999999
+codigoValido :: Int -> Bool
+codigoValido codigo = 
+    codigo >= 26200001 &&
+    codigo <= 29299999 &&
+    ((periodo codigo) `mod` 10 == 1 ||
+    (periodo codigo) `mod` 10 == 2) &&
+    numeroConsecutivo codigo /= 0
 
 -- 6. IMPRESION
 
@@ -70,4 +74,8 @@ main = do
     putStrLn "Ingrese un código:"
     entrada <- getLine
     let codigo = read entrada :: Int
-    putStrLn (descripcion codigo)
+
+    if codigoValido codigo
+        then putStrLn (descripcion codigo)
+        else putStrLn "Código Inválido."
+    
