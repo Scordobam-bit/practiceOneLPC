@@ -71,11 +71,19 @@ descripcion codigo = show (anioPeriodo (periodo codigo))
 
 main :: IO ()
 main = do
-    putStrLn "Ingrese un código:"
+    putStrLn "Ingrese el código o escriba 'salir':"
     entrada <- getLine
-    let codigo = read entrada :: Int
 
-    if codigoValido codigo
-        then putStrLn (descripcion codigo)
-        else putStrLn "Código Inválido."
+    if entrada == "salir"
+        then putStrLn "Programa Terminado."
+        else do
+            let codigo = read entrada :: Int
+            
+            if codigoValido codigo
+                then putStrLn (descripcion codigo)
+                else putStrLn "Código Inválido."
+
+            main
+
+    
     
