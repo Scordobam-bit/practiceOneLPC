@@ -1,3 +1,4 @@
+-- Camilo Gómez & Samuel Córdoba
 -- 1. DESCOMPOSICIÓN DEL CÓDIGO
 
 numeroConsecutivo :: Int -> Int
