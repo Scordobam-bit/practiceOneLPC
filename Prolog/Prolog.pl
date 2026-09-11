@@ -12,15 +12,15 @@ code_id(Number, Sum) :-
 
 category(CategoryNumber, administrative) :-
     code_id(CategoryNumber, Sum),       % Calcula la suma de divisores del número de categoría
-    Sum > CategoryNumber.               % Clasifica como abundante si la suma es mayor
+    Sum > CategoryNumber, !.            % Clasifica como abundante si la suma es mayor
 
 category(CategoryNumber, engineering) :-
     code_id(CategoryNumber, Sum),       % Calcula la suma de divisores del número de categoría
-    Sum =:= CategoryNumber.             % Clasifica como perfecto si la suma es igual
+    Sum =:= CategoryNumber, !.          % Clasifica como perfecto si la suma es igual
 
 category(CategoryNumber, humanities) :-
     code_id(CategoryNumber, Sum),       % Calcula la suma de divisores del número de categoría
-    Sum < CategoryNumber.               % Clasifica como deficiente si la suma es menor
+    Sum < CategoryNumber, !.            % Clasifica como deficiente si la suma es menor
 
 parity(Number, even) :-
     0 is Number mod 2.                  % Determina si el número es par
@@ -29,7 +29,7 @@ parity(Number, odd) :-
     1 is Number mod 2.                  % Determina si el número es impar
 
 student_id(Code, Output) :-
-    Code >= 26201001,                   % Valida el límite inferior del código de estudiante
+    Code >= 26200001,                   % Valida el límite inferior del código de estudiante
     Code =< 29299999,                   % Valida el límite superior del código de estudiante
     PeriodCode is Code // 100000,       % Extrae los dígitos correspondientes al periodo
     PeriodCode >= 262,                  % Valida que el periodo inicial sea correcto
@@ -45,26 +45,27 @@ student_id(Code, Output) :-
     Year is 2000 + (PeriodCode // 10),  % Calcula el año académico a partir del periodo
     Semester is PeriodCode mod 10,      % Obtiene el semestre académico
     category(CategoryNumber, Category), % Obtiene la categoría académica según los divisores
-    parity(Code, Parity),               % Obtiene la paridad del código completo
+    parity(ConsecutiveNumber, Parity),   % Obtiene la paridad según el número consecutivo
     format(string(Output), "~w-~w ~w num~w ~w", [Year, Semester, Category, ConsecutiveNumber, Parity]). % Formatea la salida final
 
 % Construcción de la función principal
 main :-
-    process,                            % Ejecuta la rutina secundaria
-    halt.                               % Finaliza la ejecución del programa
+    process.                            % Ejecuta la rutina secundaria
 
 % Construcción de un proceso secundario
 process :-
-    student_id(26276002, Output1),      % Procesa el primer código de prueba
-    write(Output1), nl,                 % Imprime el resultado y salta de línea
-    student_id(27128112, Output2),      % Procesa el segundo código de prueba
-    write(Output2), nl,                 % Imprime el resultado y salta de línea
-    student_id(27206025, Output3),      % Procesa el tercer código de prueba
-    write(Output3), nl,                 % Imprime el resultado y salta de línea
-    student_id(28124236, Output4),      % Procesa el cuarto código de prueba
-    write(Output4), nl,                 % Imprime el resultado y salta de línea
-    student_id(28299115, Output5),      % Procesa el quinto código de prueba
-    write(Output5), nl.                 % Imprime el resultado y salta de línea
+    write("Ingrese el código o escriba 'salir':"), nl, % Solicita la entrada al usuario
+    read_line_to_string(user_input, Input),            % Lee la entrada como cadena
+    (   Input == "salir" ->                            % Condicional para salir del bucle
+        write("Programa Terminado."), nl,
+        halt
+    ;   number_string(Code, Input),                    % Convierte la cadena a número
+        student_id(Code, Output) ->                    % Analiza el código ingresado
+        write(Output), nl,
+        process
+    ;   write("Código Inválido."), nl,                  % Maneja códigos inválidos
+        process
+    ).
 
 % Ejecución de la funcion principal
 :- main.                               % Dispara la ejecución del programa
