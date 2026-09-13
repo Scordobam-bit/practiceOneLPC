@@ -42,8 +42,8 @@ clasificar categoriaCodigo
 -- 4. EVEN ODD
 
 paridad :: Int -> String --Se calcula la paridad del código
-paridad numeroConsecutivo 
-    | numeroConsecutivo `mod`  2 == 0 = "even"
+paridad codigo 
+    | codigo `mod`  2 == 0 = "even"
     | otherwise = "odd"
 
 -- 5. VALIDACION DE CODIGO 
@@ -54,7 +54,8 @@ codigoValido codigo =
     codigo <= 29299999 &&
     ((periodo codigo) `mod` 10 == 1 ||
     (periodo codigo) `mod` 10 == 2) &&
-    numeroConsecutivo codigo /= 0
+    numeroConsecutivo codigo /= 0 &&
+    categoriaCodigo codigo /= 0
 
 -- 6. IMPRESION
 
@@ -85,6 +86,3 @@ main = do
                 else putStrLn "Código Inválido."
 
             main --Bucle del programa
-
-    
-    
